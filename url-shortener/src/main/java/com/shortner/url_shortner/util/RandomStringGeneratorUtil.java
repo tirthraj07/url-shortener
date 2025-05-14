@@ -8,7 +8,16 @@ import static org.apache.commons.text.CharacterPredicates.ASCII_ALPHA_NUMERALS;
 @Component
 public class RandomStringGeneratorUtil {
 
-    private final RandomStringGenerator generator = new RandomStringGenerator.Builder().withinRange('0', '9').withinRange('a', 'z').withinRange('A', 'Z').build();
+    private static final char[] BASE62 = (
+        "abcdefghijklmnopqrstuvwxyz" +
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZ" +
+        "0123456789"
+    ).toCharArray();
+
+    private final RandomStringGenerator generator =
+      new RandomStringGenerator.Builder()
+        .selectFrom(BASE62)
+        .build();
 
     public String generateRandomString(int length){
         return generator.generate(length);
