@@ -3,6 +3,8 @@ package com.shortner.url_shortner.controller;
 import com.shortner.url_shortner.dto.ApiResponse;
 import com.shortner.url_shortner.dto.ShortenRequestDTO;
 import com.shortner.url_shortner.dto.ShortenResponseDTO;
+import com.shortner.url_shortner.entity.UrlMapping;
+import com.shortner.url_shortner.service.UrlMappingService;
 import com.shortner.url_shortner.service.UrlShortenerService;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
@@ -15,6 +17,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 public class ShortenerController {
 
@@ -23,12 +27,20 @@ public class ShortenerController {
     @Autowired
     UrlShortenerService urlShortenerService;
 
+    @Autowired
+    UrlMappingService urlMappingService;
+
     @PostMapping("/shorten")
     public ResponseEntity<ShortenResponseDTO> shortenUrl(@Valid @RequestBody ShortenRequestDTO shortenRequestDTO){
         String longUrl = shortenRequestDTO.getLongUrl();
         String shortUrl = urlShortenerService.shortenUrl(longUrl);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(new ShortenResponseDTO(shortUrl, longUrl));
+    }
+
+    @GetMapping("/mappings")
+    public ResponseEntity<List<UrlMapping>> getAllMappings(){
+        return ResponseEntity.ok(urlMappingService.getAllMappings());
     }
 
 }

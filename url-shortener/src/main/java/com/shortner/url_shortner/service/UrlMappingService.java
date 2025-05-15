@@ -18,6 +18,10 @@ public class UrlMappingService {
     @Autowired
     private UrlMappingRepository urlMappingRepository;
 
+    public List<UrlMapping> getAllMappings(){
+        return urlMappingRepository.findAll();
+    }
+
     public UrlMapping saveUrlMapping(String code, String longUrl){
         UrlMapping urlMapping = new UrlMapping();
         urlMapping.setCode(code);
@@ -26,6 +30,7 @@ public class UrlMappingService {
     }
 
     public Optional<UrlMapping> getUrlMappingByCode(String code){
+        logger.info("Querying database for code : {}", code);
         return urlMappingRepository.findByCode(code);
     }
 
